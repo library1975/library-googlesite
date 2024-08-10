@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>16-Page Flipbook</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            height: 100%;
+            width: 100vw;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: sans-serif;
+            background-color: powderblue;
+            overflow: auto;
+        }
+
+        /* Book Container */
+        .book-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            max-width: 1000px;
+        }
+
+        /* Button Container */
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 80%;
+            padding: 0 20px;
+        }
+
+        /* Book */
+        .book {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            min-width: 300px; /* Set a minimum width */
+            height: auto;
+            min-height: 450px; /* Set a minimum height */
+            aspect-ratio: 2 / 3;
+            transition: transform 0.5s;
+            margin: 20px 0;
+        }
+
+        .paper {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            perspective: 1500px;
+        }
+
+        .front,
+        .back {
+            background-color: white;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            transform-origin: left;
+            transition: transform 0.5s;
+        }
+
+        .front {
+            z-index: 1;
+            backface-visibility: hidden;
+            border-left: 3px solid powderblue;
+        }
+
+        .back {
+            z-index: 0;
+        }
+
+        .front-content,
+        .back-content {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .back-content {
+            transform: rotateY(180deg);
+        }
+
+        .front-content img,
+        .back-content img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Ensure the entire image is visible */
+            border-radius: 5px;
+            background-color: white; /* Add a background color to fill any empty space */
+        }
+
+        /* Paper flip effect */
+        .flipped .front,
+        .flipped .back {
+            transform: rotateY(-180deg);
+        }
+
+        /* Controller Buttons */
+        button {
+            border: none;
+            background-color: transparent;
+            cursor: pointer;
+            margin: 10px;
+            font-size: 2em;
+            color: gray;
+            flex-shrink: 0;
+        }
+
+        button:focus {
+            outline: none;
+        }
+
+        button:hover {
+            color: #636363;
+        }
+
+        /* Paper stack order */
+        #p1 { z-index: 16; }
+        #p2 { z-index: 15; }
+        #p3 { z-index: 14; }
+        #p4 { z-index: 13; }
+        #p5 { z-index: 12; }
+        #p6 { z-index: 11; }
+        #p7 { z-index: 10; }
+        #p8 { z-index: 9; }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .book {
+                max-width: 90%;
+                height: auto;
+            }
+
+            button {
+                font-size: 4vw;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .book {
+                max-width: 95%;
+                height: auto;
+            }
+
+            button {
+                font-size: 5vw;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Book container -->
+    <div class="book-container">
+        <!-- Button Container on top of the book -->
+        <div class="button-container">
+            <button id="prev-btn">
+                &lt;
+            </button>
+            <button id="next-btn">
+                &gt;
+            </button>
+        </div>
+
+        <!-- Book -->
+        <div id="book" class="book">
+            <!-- Paper 1 -->
+            <div id="p1" class="paper">
+                <div class="front">
+                    <div id="f1" class="front-content">
+                        <img src="./img/page1.png" alt="Page 1">
+                    </div>
+                </div>
+                <div class="back">
+                    <div id="b1" class="back-content">
+                        <img src="./img/page2.jpg" alt="Page 2">
+                    </div>
+                </div>
+            </div>
+            <!-- Paper 2 -->
+            <div id="p2" class="paper">
+                <div class="front">
+                    <div id="f2" class="front-content">
+                        <img src="./img/page4.jpg" alt="Page 3">
+                    </div>
+                </div>
+                <div class="back">
+                    <div id="b2" class="back-content">
+                        <img src="./img/page5.jpg" alt="Page 4">
+                    </div>
+                </div>
+            </div>
+            <!-- Paper 3 -->
+            <div id="p3" class="paper">
+                <div class="front">
+                    <div id="f3" class="front-content">
+                        <img src="./img/page8.jpg" alt="Page 5">
+                    </div>
+                </div>
+                <div class="back">
+                    <div id="b3" class="back-content">
+                        <img src="./img/page9.jpg" alt="Page 6">
+                    </div>
+                </div>
+            </div>
+            <!-- Paper 4 -->
+            <div id="p4" class="paper">
+                <div class="front">
+                    <div id="f4" class="front-content">
+                        <img src="./img/page12.jpg" alt="Page 7">
+                    </div>
+                </div>
+                <div class="back">
+                    <div id="b4" class="back-content">
+                        <img src="./img/page13.jpg" alt="Page 8">
+                    </div>
+                </div>
+            </div>
+            <!-- Paper 5 -->
+            <div id="p5" class="paper">
+                <div class="front">
+                    <div id="f5" class="front-content">
+                        <img src="./img/page14.jpg" alt="Page 9">
+                    </div>
+                </div>
+                <div class="back">
+                    <div id="b5" class="back-content">
+                        <img src="./img/page11.jpg" alt="Page 10">
+                    </div>
+                </div>
+            </div>
+            <!-- Paper 6 -->
+            <div id="p6" class="paper">
+                <div class="front">
+                    <div id="f6" class="front-content">
+                        <img src="./img/page10.jpg" alt="Page 11">
+                    </div>
+                </div>
+                <div class="back">
+                    <div id="b6" class="back-content">
+                        <img src="./img/page7.jpg" alt="Page 12">
+                    </div>
+                </div>
+            </div>
+            <!-- Paper 7 -->
+            <div id="p7" class="paper">
+                <div class="front">
+                    <div id="f7" class="front-content">
+                        <img src="./img/page6.jpg" alt="Page 13">
+                    </div>
+                </div>
+                <div class="back">
+                    <div id="b7" class="back-content">
+                        <img src="./img/page3.jpg" alt="Page 14">
+                    </div>
+                </div>
+            </div>
+            <!-- Paper 8 -->
+            <div id="p8" class="paper">
+                <div class="front">
+                    <div id="f8" class="front-content">
+                        <img src="./img/page15.jpg" alt="Page 15">
+                    </div>
+                </div>
+                <div class="back">
+                    <div id="b8" class="back-content">
+                        <img src="./img/page16.jpg" alt="Page 16">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // References to DOM Elements
+        const prevBtn = document.querySelector("#prev-btn");
+        const nextBtn = document.querySelector("#next-btn");
+        const book = document.querySelector("#book");
+
+        const papers = [];
+        for (let i = 1; i <= 8; i++) {
+            papers.push(document.querySelector(`#p${i}`));
+        }
+
+        // Event Listener
+        prevBtn.addEventListener("click", goPrevPage);
+        nextBtn.addEventListener("click", goNextPage);
+
+        // Business Logic
+        let currentLocation = 1;
+        let numOfPapers = 8;
+        let maxLocation = numOfPapers + 1;
+
+        function openBook() {
+            book.style.transform = "translateX(50%)";
+        }
+
+        function closeBook(isAtBeginning) {
+            if (isAtBeginning) {
+                book.style.transform = "translateX(0%)";
+            } else {
+                book.style.transform = "translateX(100%)";
+            }
+        }
+
+        function resetBook() {
+            currentLocation = 1;
+            closeBook(true);
+            papers.forEach((paper, index) => {
+                paper.classList.remove("flipped");
+                paper.style.zIndex = numOfPapers - index;
+            });
+        }
+
+        function goNextPage() {
+            if (currentLocation < maxLocation) {
+                if (currentLocation === 1) {
+                    openBook();
+                }
+                papers[currentLocation - 1].classList.add("flipped");
+                papers[currentLocation - 1].style.zIndex = currentLocation;
+                currentLocation++;
+                if (currentLocation === maxLocation) {
+                    closeBook(false);
+                }
+            }
+        }
+
+        function goPrevPage() {
+            if (currentLocation > 1) {
+                if (currentLocation === 2) {
+                    closeBook(true);
+                }
+                currentLocation--;
+                papers[currentLocation - 1].classList.remove("flipped");
+                papers[currentLocation - 1].style.zIndex = numOfPapers - currentLocation + 1;
+                if (currentLocation === 1) {
+                    closeBook(true);
+                }
+            }
+        }
+
+        // Reset the book when the page loads
+        resetBook();
+    </script>
+</body>
+</html>
